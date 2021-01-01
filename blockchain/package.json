@@ -1,0 +1,22 @@
+{
+  "name": "vote-chain",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "mhk",
+  "license": "ISC",
+  "dependencies": {
+    "solc": "^0.4.25",
+    "ganache-cli": "^6.1.8",
+    "mocha": "^5.2.0",
+    "truffle-hdwallet-provider": "0.0.6",
+    "web3": "^1.0.0-beta-35"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
