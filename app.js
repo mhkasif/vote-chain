@@ -1,25 +1,36 @@
 const express = require("express");
-const Voter = require("./Model/VoterModel");
+const multer = require("multer");
+const validateFingerprint = require("./controller/validateFingerprint");
+const validateIdCard = require("./controller/validateIdCard");
 const app = express();
+
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+      console.log(req.body)
+    const ext = file.mimetype.split("/")[1];
+    cb(null, `${req.body.voter_id}-${req.body.finger}_${Date.now()}.${ext}`);
+  },
+});
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) cb(null, true);
+  else {
+    cb("Not an image", false);
+  }
+};
+
+const upload = multer({
+  storage:multerStorage,
+  fileFilter:multerFilter
+});
 
 app.use(express.json());
 
-app.post("/validate", async (req, res) => {
-  const { voter_id, expiry_date } = req.body;
+app.post("/validate", validateIdCard);
 
-  try {
-    const response = await Voter.findOne({ voter_id,expiry_date });
-    console.log(response)
-    if(!response){
-       return res.status(404).json({ error: "Id card not valid" });
-    }
-    if (response.vote_casted) res.status(404).json({ error: "Vote is already casted" });
-    else res.status(200).json({ data: 'validated' });
-  } catch (error) {
-    res.status(404).json({ error: error });
-    console.log(error);
-  }
-});
-
+app.post("/fingerprint", upload.single("data"), validateFingerprint);
 
 module.exports = app;
