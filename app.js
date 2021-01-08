@@ -3,6 +3,7 @@ const multer = require("multer");
 const validateFingerprint = require("./controller/validateFingerprint");
 const validateIdCard = require("./controller/validateIdCard");
 const app = express();
+const {isVoted,casteVote,voteCount}=require('./controller/casteVote')
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -30,7 +31,10 @@ const upload = multer({
 app.use(express.json());
 
 app.post("/validate", validateIdCard);
-
+app.post("/is-voted",  isVoted);
+app.post("/caste-vote",  casteVote);
+app.get("/vote-count",  voteCount);
 app.post("/fingerprint", upload.single("data"), validateFingerprint);
+
 
 module.exports = app;

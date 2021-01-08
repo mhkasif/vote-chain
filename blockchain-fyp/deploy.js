@@ -30,7 +30,7 @@ web3.eth.getBalance(accounts[0]).then((e)=>console.log(e));
     console.log("deploy from acc", accounts[0]);
     const result = await new web3.eth.Contract(interface)
       .deploy({ data: bytecode, arguments: [] })
-      .send({ from: accounts[0], gas: "1000000", gasLimit: "3000000" });
+      .send({ from: accounts[0], gas: "2000000", gasLimit: "3000000" });
 
     console.log("deployed to", result.options.address);
   } catch (error) {

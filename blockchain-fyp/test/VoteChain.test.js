@@ -6,7 +6,7 @@ const Web3 = require("web3");
 const compiledVotechain= require("../build/VoteChain.json");
 const interface=(compiledVotechain).abi;
 const bytecode=(compiledVotechain).evm.bytecode.object
-console.log(interface)
+// console.log(interface)
 const provider = new HDWalletProvider({
   mnemonic: {
     phrase:
@@ -24,13 +24,13 @@ let VoteChain;
 beforeEach(async () => {
   //Get list of all accounts
   accounts = await web3.eth.getAccounts();
-  console.log(accounts);
+  const x=await web3.eth.getBalance(accounts[0])
   //use one address to deploye the contract
   VoteChain = await new web3.eth.Contract(interface)
     .deploy({
       data: bytecode,
     })
-    .send({ from: accounts[0], gas: "1000000", gasLimit: "3000000" });
+    .send({ from: accounts[0], gas: "2000000", gasLimit: "3000000" });
 });
 
 describe("VoteChain", () => {
@@ -39,7 +39,6 @@ describe("VoteChain", () => {
   });
   it("has a Manager", async () => {
     const manager = await VoteChain.methods.manager().call();
-    console.log(manager);
     assert.equal(manager, accounts[0]);
   });
   it("cast vote", async () => {
@@ -67,6 +66,21 @@ describe("VoteChain", () => {
       assert.ok(error);
     }
   });
+  it("Amount of vote cast",async ()=>{
+    try {
+
+      const x = await VoteChain.methods
+      .casteVote("8881212", "PTI")
+      .send({ from: accounts[0], gas: "2000000" });
+      const votecount=await VoteChain.methods.votecountofparties('PTI','PMLN','PTI').call()
+      console.log(Object.values(votecount),'total')
+      assert.ok(true)
+    } catch (error) {
+      assert.ok(false)
+
+    }
+
+  })
   it("failed if already voted", async () => {
     try {
       await VoteChain.methods
