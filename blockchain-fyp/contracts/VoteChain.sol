@@ -71,7 +71,7 @@ struct Party{
     mapping (uint => Voter)  votersArray;
     mapping (string => Party )  partyArray;
 
-    event  voteCasted(uint voterId);
+    event  voteCasted(string partname);
 constructor() public{
     manager=msg.sender;
 
@@ -92,7 +92,7 @@ function casteVote(uint voterId, string memory partyname) public restricted {
     votersArray[voterId]=Voter(voterId,partyname,true);
     partyArray[partyname].totalvote+=1;
 
-    emit voteCasted(voterId);
+    emit voteCasted(partyname);
 }
 function voted(uint vId) public view restricted returns (bool) {
     return votersArray[vId].voted;

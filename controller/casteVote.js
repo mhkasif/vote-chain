@@ -8,8 +8,8 @@ const casteVote = async (req, res) => {
     VoteChain.methods
       .casteVote(voter_id, partyName)
       .send({ from: account[0], gas: "2000000" })
-      .then((e) => res.status(200).json({ error: "vote casted successfully" }))
-      .catch((e) => res.status(401).json({ error: "vote already casted" }));
+      .then((e) => res.status(200).json({ text: "vote casted successfully",transactionId:e.transactionHash,votedTo:e.events.voteCasted.returnValues.partname }))
+      .catch((e) => res.status(401).json({ text: "vote already casted" }));
 
     // }
   } catch (error) {

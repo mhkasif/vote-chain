@@ -1,3 +1,6 @@
+//Todo:solidity emitting event with partname instead of partyname
+
+
 const express = require("express");
 const multer = require("multer");
 const validateFingerprint = require("./controller/validateFingerprint");
