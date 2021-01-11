@@ -15,7 +15,7 @@ const db=mongoose
   .then((con) => console.log("db connected"))
   .catch((error) => console.log("error while connecting db"));
 
-app.listen(process.env.PORT || 8000, () => {
+app.listen(process.env.PORT || 8800, () => {
   console.log("server is running");
 });
 
