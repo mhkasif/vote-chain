@@ -11,10 +11,9 @@ const casteVote = async (req, res) => {
       .then((e) => res.status(200).json({ text: "vote casted successfully",transactionId:e.transactionHash,votedTo:e.events.voteCasted.returnValues.partname }))
       .catch((e) => res.status(401).json({ text: "vote already casted" }));
 
-    // }
   } catch (error) {
     res.status(404).json({ error: error });
-    // console.log(error);
+
   }
 };
 const isVoted = async (req, res) => {
