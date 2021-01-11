@@ -33,11 +33,11 @@ const upload = multer({
 
 app.use(express.json());
 
+app.get('/',(req,res)=>res.send('hello'))
 app.post("/validate", validateIdCard);
 app.post("/is-voted",  isVoted);
 app.post("/caste-vote",  casteVote);
 app.get("/vote-count",  voteCount);
 app.post("/fingerprint", upload.single("data"), validateFingerprint);
-
 
 module.exports = app;
