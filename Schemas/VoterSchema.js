@@ -13,6 +13,7 @@ const voterSchema = new mongoose.Schema({
     vote_casted:{
       default:false,
 type:Boolean
-    }
+    },
+    l1:String
   });
   module.exports=voterSchema
