@@ -1,5 +1,6 @@
 const web3 = require("../web3");
 const VoteChain = require("../VoteChain.js");
+const Voter = require("../Model/VoterModel");
 const casteVote = async (req, res) => {
   const { voter_id, partyName } = req.body;
   console.log(voter_id, partyName);
@@ -8,12 +9,22 @@ const casteVote = async (req, res) => {
     VoteChain.methods
       .casteVote(voter_id, partyName)
       .send({ from: account[0], gas: "2000000" })
-      .then((e) => res.status(200).json({ text: "vote casted successfully",transactionId:e.transactionHash,votedTo:e.events.voteCasted.returnValues.partname }))
-      .catch((e) => res.status(401).json({ text: "vote already casted" }));
-
+      .then(async (e) => {
+        console.log(e);
+        const newV = await Voter.findOneAndUpdate(
+          { voter_id },
+          { vote_casted: true },
+          { new: true }
+        );
+          res.status(200).json({
+            text: "vote casted successfully",
+            transactionId: e.transactionHash,
+            votedTo: e.events.voteCasted.returnValues.partname,
+          });
+      })
+      .catch((e) => res.status(403).json({ text: "vote already casted" }));
   } catch (error) {
     res.status(404).json({ error: error });
-
   }
 };
 const isVoted = async (req, res) => {
@@ -45,15 +56,13 @@ const voteCount = async (req, res) => {
       .call({ from: account[0] })
       .then((e) => {
         console.log(e);
-        res
-          .status(200)
-          .json({
-            status: {
-              PTI: Object.values(e)[0],
-              PMLN: Object.values(e)[1],
-              PPP: Object.values(e)[2],
-            },
-          });
+        res.status(200).json({
+          status: {
+            PTI: Object.values(e)[0],
+            PMLN: Object.values(e)[1],
+            PPP: Object.values(e)[2],
+          },
+        });
       })
       .catch((e) => res.status(404).json({ error: e }));
   } catch (error) {
