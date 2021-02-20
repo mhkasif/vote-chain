@@ -22,9 +22,9 @@ const casteVote = async (req, res) => {
             votedTo: e.events.voteCasted.returnValues.partname,
           });
       })
-      .catch((e) => res.status(403).json({ text: "vote already casted" }));
+      .catch((e) => res.status(200).json({ text: "vote already casted" }));
   } catch (error) {
-    res.status(404).json({ error: error });
+    res.status(200).json({ error: error });
   }
 };
 const isVoted = async (req, res) => {
@@ -64,10 +64,10 @@ const voteCount = async (req, res) => {
           },
         });
       })
-      .catch((e) => res.status(404).json({ error: e }));
+      .catch((e) => res.status(200).json({ error: e }));
   } catch (error) {
     console.log(error);
-    res.status(404).json({ error: error });
+    res.status(200).json({ error: error });
   }
 };
 module.exports = { casteVote, isVoted, voteCount };

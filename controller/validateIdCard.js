@@ -10,15 +10,15 @@ const validateIdCard = async (req, res) => {
     const response = await Voter.findOne({ voter_id });
     console.log(response);
     if (!response) {
-      return res.status(404).json({ error: "Id card not valid" });
+      return res.status(200).json({ error: "Id card not valid" });
     }
     if (response.vote_casted)
-    return  res.status(404).json({ error: "Vote is already casted" });
+    return  res.status(200).json({ error: "Vote is already casted" });
     else {
       res.status(200).json({ data: "validated" });
     }
   } catch (error) {
-    res.status(404).json({ error: error });
+    res.status(200).json({ error: error });
     // console.log(error);
   }
 };

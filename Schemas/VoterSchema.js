@@ -7,7 +7,7 @@ const voterSchema = new mongoose.Schema({
       unique: true,
     },
     expiry_date: {
-      type: Date,
+      type: String,
       required: true,
     },
     vote_casted:{

@@ -24,11 +24,11 @@ const validateFingerprint = async (req, res) => {
     //     headers: { ...formHeader },
     //   });
     //   console.log(resp)
-      res.json({ data: "matched" });
-    } else res.json({ error: "voter does not exist" });
+      res.status(200).json({ data: "matched" });
+    } else res.status(200).json({ error: "voter does not exist" });
   } catch (error) {
     console.log(error, "not matched");
-    res.json({ error:"not matched" });
+    res.status(200).json({ error:"not matched" });
   }
 };
 
