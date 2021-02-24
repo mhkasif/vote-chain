@@ -7,7 +7,7 @@ const validateIdCard = async (req, res) => {
   console.log(voter_id);
   try {
     // const response = await Voter.findOne({ voter_id, expiry_date });
-    const response = await Voter.findOne({ voter_id });
+    const response = await Voter.findOne({ voter_id,expiry_date });
     console.log(response);
     if (!response) {
       return res.status(200).json({ error: "Id card not valid" });
