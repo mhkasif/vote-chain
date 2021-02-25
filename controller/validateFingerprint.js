@@ -26,10 +26,15 @@ const validateFingerprint = async (req, res) => {
       // const url="http://localhost:8800/test"
       data.submit(url, (err, resp) => {
         if (err) {
-          console.log('err');
+          res.status(200).json({ err: err });
         } else {
-          // res.status(200).json({ data: resp });
-          console.log(resp);
+          console.log(resp.statusCode);
+          if(resp.statusCode===200){
+            res.status(200).json({ data: "matched" });
+          }
+          if(resp.statusCode===400){
+            res.status(200).json({ data: "unmatched" });
+          }
         }
       });
       // const resp = await axios.post((url),
