@@ -35,6 +35,7 @@ const validateFingerprint = async (req, res) => {
           if(resp.statusCode===400){
             res.status(200).json({ data: "unmatched" });
           }
+          res.status(200).json({ error: "error" });
         }
       });
       // const resp = await axios.post((url),
