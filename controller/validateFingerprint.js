@@ -21,27 +21,30 @@ const validateFingerprint = async (req, res) => {
       const formHeader = data.getHeaders();
 
       //  const resp =await axios.post("http://localhost:8800/test", data, {
-      const prox="https://cors-anywhere.herokuapp.com/"
-      const url="https://vote-chain-app.herokuapp.com/upload/"
+      const prox = "https://cors-anywhere.herokuapp.com/";
+      const url = "https://vote-chain-app.herokuapp.com/upload/";
       // const url="http://localhost:8800/test"
-      // const instance=axios.create({
-      //   validateStatus: (status) => {
-      //     return status>=200 && status<=300; // I'm always returning true, you may want to do it depending on the status received
-      //   },
-      // })
-      const resp = await axios.post((url),
-      // axios.post((url),
-        data,
-        {
-          // headers: { "Access-Control-Allow-Origin": "*","Accept":"*" },
-          // headers: {"X-Frame-Options":"DENY","X-Content-Type-Options":"nosniff","Referrer-Policy":"same-origin","Server":"gunicorn/20.0.4","Allow":"POST,OPTIONS","Content-Type":"application/json" },
-          headers: {...formHeader},
+      data.submit(url, (err, resp) => {
+        if (err) {
+          console.log('err');
+        } else {
+          // res.status(200).json({ data: resp });
+          console.log(resp);
         }
-      )
+      });
+      // const resp = await axios.post((url),
+      // // axios.post((url),
+      //   data,
+      //   {
+      //     // headers: { "Access-Control-Allow-Origin": "*","Accept":"*" },
+      //     // headers: {"X-Frame-Options":"DENY","X-Content-Type-Options":"nosniff","Referrer-Policy":"same-origin","Server":"gunicorn/20.0.4","Allow":"POST,OPTIONS","Content-Type":"application/json" },
+      //     headers: {...formHeader},
+      //   }
+      // )
       // .then(x=>console.log(x)).catch(e=>console.log(e));
       // console.log(resp);
 
-      res.status(200).json({ data: "resp" });
+      // res.status(200).json({ data: "resp" });
     } else res.status(200).json({ error: "voter does not exist" });
   } catch (error) {
     // console.log(error, "not matched");
