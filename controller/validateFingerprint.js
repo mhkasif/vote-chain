@@ -16,7 +16,7 @@ const validateFingerprint = async (req, res) => {
       data.append("file", req.file.buffer, {
         filename: `${req.file.fieldname}.${req.file.mimetype.split("/")[1]}`,
         contentType: req.file.mimetype,
-      });
+      })
 
       const formHeader = data.getHeaders();
 
