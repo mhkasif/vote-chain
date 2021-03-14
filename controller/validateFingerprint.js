@@ -18,7 +18,7 @@ const validateFingerprint = async (req, res) => {
         contentType: req.file.mimetype,
       })
 
-      const formHeader = data.getHeaders();
+      // const formHeader = data.getHeaders();
 
       //  const resp =await axios.post("http://localhost:8800/test", data, {
       const prox = "https://cors-anywhere.herokuapp.com/";
