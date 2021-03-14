@@ -24,21 +24,26 @@ const validateFingerprint = async (req, res) => {
       const prox = "https://cors-anywhere.herokuapp.com/";
       const url = "https://vote-chain-app.herokuapp.com/upload/";
       // const url="http://localhost:8800/test"
-      // data.submit(url, (err, resp) => {
-      //   if (err) {
-      //     res.status(200).json({ err: err });
-      //   } else {
-      //     console.log(resp.statusCode);
-      //     if(resp.statusCode===200){
+      data.submit(url, (err, resp) => {
+        if (err) {
+          res.status(200).json({ err: err });
+          return
+        } else {
+          console.log(resp.statusCode);
+          if(resp.statusCode===200){
             res.status(200).json({ data: "matched" });
-      //     }
-      //     if(resp.statusCode===400){
-      //       res.status(200).json({ data: "unmatched" });
-      //     }
-      //     res.status(200).json({ error: "error" });
-      //   }
+            return
+          }
+          if(resp.statusCode===400){
+            res.status(200).json({ data: "unmatched" });
+            return
+          }
+          res.status(200).json({ error: "error" });
+          return
+        }
 
-      // });
+
+      });
       // const resp = await axios.post((url),
       // // axios.post((url),
       //   data,
