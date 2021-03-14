@@ -53,7 +53,7 @@ const validateFingerprint = async (req, res) => {
       // res.status(200).json({ data: "resp" });
     } else res.status(200).json({ error: "voter does not exist" });
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.status(200).json({ error: error });
   }
 };
