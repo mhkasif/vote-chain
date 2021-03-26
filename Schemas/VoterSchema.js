@@ -14,6 +14,10 @@ const voterSchema = new mongoose.Schema({
     default: false,
     type: Boolean,
   },
+  gender:{
+    type:String,
+    default:'male'
+  },
   l1: {default:"none",type:String},
   l2: {default:"none",type:String},
   l3: {default:"none",type:String},

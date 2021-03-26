@@ -16,11 +16,11 @@ const casteVote = async (req, res) => {
           { vote_casted: true },
           { new: true }
         );
-          res.status(200).json({
-            text: "vote casted successfully",
-            transactionId: e.transactionHash,
-            votedTo: e.events.voteCasted.returnValues.partname,
-          });
+        res.status(200).json({
+          text: "vote casted successfully",
+          transactionId: e.transactionHash,
+          votedTo: e.events.voteCasted.returnValues.partname,
+        });
       })
       .catch((e) => res.status(200).json({ text: "vote already casted" }));
   } catch (error) {
@@ -49,6 +49,25 @@ const isVoted = async (req, res) => {
 };
 const voteCount = async (req, res) => {
   try {
+    const stats = await Voter.aggregate([
+      {
+        // $match: { $and: [{ gender: "male" }, { vote_casted: true }] },
+        $match: { vote_casted: true },
+      },
+      {
+        $group: {
+          _id: "$gender",
+          num: { $sum: 1 },
+        },
+      },
+      // { $match: { $and: [{ gender: "female" }, { vote_casted: true }] } },
+      // {
+      //   $group: {
+      //     _id: gender,
+      //     num: { $sum: 1 },
+      //   },
+      // },
+    ]);
     const account = await web3.eth.getAccounts();
     console.log(account);
     VoteChain.methods
@@ -61,6 +80,8 @@ const voteCount = async (req, res) => {
             PTI: Object.values(e)[0],
             PMLN: Object.values(e)[1],
             PPP: Object.values(e)[2],
+            female: stats.filter(e=>e._id==='female')[0].num+'',
+            male: stats.filter(e=>e._id==='male')[0].num+'',
           },
         });
       })
