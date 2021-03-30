@@ -18,6 +18,10 @@ const voterSchema = new mongoose.Schema({
     type:String,
     default:'male'
   },
+  dob:{
+    type:Date,
+    default:new Date('2021')
+  },
   l1: {default:"none",type:String},
   l2: {default:"none",type:String},
   l3: {default:"none",type:String},

@@ -60,14 +60,100 @@ const voteCount = async (req, res) => {
           num: { $sum: 1 },
         },
       },
-      // { $match: { $and: [{ gender: "female" }, { vote_casted: true }] } },
+    ]);
+
+    const youngAge = new Date().getFullYear() - 28;
+    const middleAge = new Date().getFullYear() - 48;
+    // const oldAge=new Date().getFullYear()-28;
+    console.log(youngAge);
+    const ageGroup = await Voter.aggregate([
+      {
+        $match: {
+          vote_casted: true,
+        },
+      },
+      {
+        $facet: {
+          young: [
+            {
+              $match: {
+                dob: {
+                  $gte: new Date(`${youngAge}-01-01`),
+                },
+              },
+            },
+            {
+              $group: {
+                _id: "young",
+                num: { $sum: 1 },
+              },
+            },
+          ],
+          middle: [
+            {
+              $match: {
+                dob: {
+                  $gte: new Date(`${middleAge}-01-01`),
+                  $lte: new Date(`${youngAge}-01-01`),
+                },
+              },
+            },
+            {
+              $group: {
+                _id: 'middle',
+                num: { $sum: 1 },
+              },
+            },
+          ],
+          old: [
+            {
+              $match: {
+                dob: {
+                  // $gte: new Date(`${middleAge}-01-01`),
+                  $lte: new Date(`${middleAge}-01-01`),
+                },
+              },
+            },
+            {
+              $group: {
+                _id: 'old',
+                num: { $sum: 1 },
+              },
+            },
+          ],
+        },
+        // $match: { $and: [{ gender: "male" }, { vote_casted: true }] },
+      },
+      // {
+      //   // $match: { $and: [{ gender: "male" }, { vote_casted: true }] },
+      //   $match: {
+      //     dob: {
+      //       $gte: new Date(middleAge),
+      //       $lte: new Date(youngAge),
+      //     },
+      //   },
+      // },
       // {
       //   $group: {
-      //     _id: gender,
+      //     _id: null,
       //     num: { $sum: 1 },
       //   },
       // },
+      // {
+      //   $match: {
+      //     dob: {
+      //       $lte: new Date(middleAge),
+      //     },
+      //   },
+      // },
+      // {
+      //   $group: {
+      //     _id: null,
+      //     num: { $sum: 1 },
+      //   },
+      // }
     ]);
+    console.log(ageGroup[0].young[0].num,ageGroup[0].middle[0].num,ageGroup[0].old[0].num);
     const account = await web3.eth.getAccounts();
     console.log(account);
     VoteChain.methods
@@ -80,8 +166,11 @@ const voteCount = async (req, res) => {
             PTI: Object.values(e)[0],
             PMLN: Object.values(e)[1],
             PPP: Object.values(e)[2],
-            female: stats.filter(e=>e._id==='female')[0].num+'',
-            male: stats.filter(e=>e._id==='male')[0].num+'',
+            female: stats.filter((e) => e._id === "female")[0].num + "",
+            male: stats.filter((e) => e._id === "male")[0].num + "",
+            young:ageGroup[0].young[0].num+'',
+            middle:ageGroup[0].middle[0].num+'',
+            old:ageGroup[0].old[0].num+''
           },
         });
       })
